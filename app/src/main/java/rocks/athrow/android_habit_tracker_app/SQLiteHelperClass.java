@@ -79,23 +79,13 @@ public class SQLiteHelperClass
      * but in actual android project we need to insert
      * actual values.
      */
-    public void insertToSimpleDataBase()
+    public void insertIntoDatabase(ContentValues contentValues)
     {
         db = sqlHelper.getWritableDatabase();
 
-        ContentValues cv = new ContentValues();
-        cv.put(FIELD_NAME, "John");
-        cv.put(FIELD_COUNT, "0000000000");
-        // Inserting values in different columns of the table using
-        // Content Values
-        db.insert(TABLE_HABITS, null, cv);
+        db.insert(TABLE_HABITS, null, contentValues);
 
-        cv = new ContentValues();
-        cv.put(FIELD_NAME, "Tom");
-        cv.put(FIELD_COUNT, "5555555");
-        // Inserting values in different columns of the table using
-        // Content Values
-        db.insert(TABLE_HABITS, null, cv);
+
     }
 
     /**
@@ -139,7 +129,7 @@ public class SQLiteHelperClass
      */
     public void delete(String name)
     {
-        String whereClause = FIELD_NAME + "=?";
+        String whereClause = FIELD_ID + "=?";
         String[] whereArgs = new String[]{name};
         db = sqlHelper.getWritableDatabase();
         db.delete(TABLE_HABITS, whereClause, whereArgs);
@@ -155,7 +145,7 @@ public class SQLiteHelperClass
      */
     public void update(String name)
     {
-        String whereClause = FIELD_NAME + "=?";
+        String whereClause = FIELD_ID + "=?";
         String[] whereArgs = new String[]{name};
         ContentValues cv = new ContentValues();
         cv.put(FIELD_NAME, "Betty");
