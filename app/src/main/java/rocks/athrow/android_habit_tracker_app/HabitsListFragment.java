@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class HabitsListFragment extends Fragment {
 
-    public MainActivityFragment() {
+    public HabitsListFragment() {
     }
 
     @Override

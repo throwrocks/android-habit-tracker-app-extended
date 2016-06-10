@@ -13,6 +13,7 @@ import android.util.Log;
  */
 public class SQLiteHelperClass
 {
+    private final String LOG_TAG = SQLiteHelperClass.class.getSimpleName();
 
     public static final int VERSION_NUMBER = 1;
     public static final String TABLE_HABITS = "habits";
@@ -41,6 +42,7 @@ public class SQLiteHelperClass
 
                     @Override
                     public void onCreate(SQLiteDatabase db) {
+                     Log.e(LOG_TAG, "onCreate: " + true);
                         // creating table during onCreate
                         String createContactsTable =
                                 "CREATE TABLE "
@@ -75,9 +77,6 @@ public class SQLiteHelperClass
      *
      * Method to insert data to the database.
      *
-     * Here we have just used some hard coded values
-     * but in actual android project we need to insert
-     * actual values.
      */
     public void insertIntoDatabase(ContentValues contentValues)
     {
@@ -127,10 +126,10 @@ public class SQLiteHelperClass
      * the record. All the records with this name will
      * be deleted.
      */
-    public void delete(String name)
+    public void delete(String id)
     {
         String whereClause = FIELD_ID + "=?";
-        String[] whereArgs = new String[]{name};
+        String[] whereArgs = new String[]{id};
         db = sqlHelper.getWritableDatabase();
         db.delete(TABLE_HABITS, whereClause, whereArgs);
     }
@@ -143,15 +142,12 @@ public class SQLiteHelperClass
      * of the record. All the records with this name will
      * be updated.
      */
-    public void update(String name)
+    public void update(String id, ContentValues contentValues)
     {
         String whereClause = FIELD_ID + "=?";
-        String[] whereArgs = new String[]{name};
-        ContentValues cv = new ContentValues();
-        cv.put(FIELD_NAME, "Betty");
-        cv.put(FIELD_COUNT, "999000");
+        String[] whereArgs = new String[]{id};
         db = sqlHelper.getWritableDatabase();
-        db.update(TABLE_HABITS, cv, whereClause, whereArgs);
+        db.update(TABLE_HABITS, contentValues, whereClause, whereArgs);
     }
 
 }
