@@ -93,7 +93,7 @@ public class SQLiteHelperClass
      *
      * Here we are reading the entire table.
      */
-    public void getDataFromDatabase()
+    public Cursor getDataFromDatabase()
     {
         int count;
         db = sqlHelper.getReadableDatabase();
@@ -116,6 +116,8 @@ public class SQLiteHelperClass
             count = cr.getCount();
             Log.d("DATABASE", "count is : " + count);
         }
+
+        return cr;
     }
 
     /**

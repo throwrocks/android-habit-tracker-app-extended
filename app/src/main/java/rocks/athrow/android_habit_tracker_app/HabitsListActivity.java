@@ -3,6 +3,7 @@ package rocks.athrow.android_habit_tracker_app;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -23,8 +24,11 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import okhttp3.OkHttpClient;
 
-public class HabitsListActivity extends AppCompatActivity {
+public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback{
     private final String LOG_TAG = HabitsListActivity.class.getSimpleName();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +111,11 @@ public class HabitsListActivity extends AppCompatActivity {
         // Automatically pop up the keyboard
         // See http://stackoverflow.com/questions/2403632/android-show-soft-keyboard-automatically-when-focus-is-on-an-edittext
         alertbox.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+
     }
 }
 
