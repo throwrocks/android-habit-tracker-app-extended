@@ -40,7 +40,7 @@ public class HabitsContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_HABIT_NAME;
 
         // The internal id is used by all tables
-        public static final String COUNTRIES_TABLE_NAME = "countries";
+        public static final String HABITS_TABLE_NAME = "habits";
 
         //The habits table fields
         public static final String habitId = "id";

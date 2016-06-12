@@ -20,9 +20,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
-
-import okhttp3.OkHttpClient;
 
 public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback{
     private final String LOG_TAG = HabitsListActivity.class.getSimpleName();
@@ -90,9 +87,9 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
                         final ContentValues contentValues = new ContentValues();
                         contentValues.put("name",habitName);
 
-                        SQLiteHelperClass sql = new SQLiteHelperClass(getApplicationContext());
+                        DBHelper sql = new DBHelper(getApplicationContext());
                         Log.e(LOG_TAG, "onClick: " + true);
-                        sql.insertIntoDatabase(contentValues);
+                        //sql.insertIntoDatabase(contentValues);
                         Log.e(LOG_TAG, "Content: " + contentValues.get("name"));
                         Context context = getApplicationContext();
                         CharSequence text = "Habit Added!";

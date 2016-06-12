@@ -75,6 +75,7 @@ public class HabitsListFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
         CursorLoader cursorLoader;
         cursorLoader = new CursorLoader (
                 getActivity(),
