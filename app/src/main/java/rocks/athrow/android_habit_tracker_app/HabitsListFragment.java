@@ -35,7 +35,7 @@ public class HabitsListFragment extends Fragment implements LoaderManager.Loader
         habitsAdapter = new HabitsListAdapter(getContext(), mCursor);
 
         Log.e(LOG_TAG, "onCreateView -> " + true);
-        View rootView = inflater.inflate(R.layout.content_main, container, false);
+        View rootView = inflater.inflate(R.layout.habits_list_fragment, container, false);
         View recyclerView = rootView.findViewById(R.id.list);
         Log.e(LOG_TAG, "recyclerView -> " + recyclerView);
         if ( recyclerView != null ) {

@@ -46,6 +46,8 @@ public class HabitsContract {
         public static final String habitId = "id";
         public static final String habitName = "name";
         public static final String habitCount = "count";
+        public static final String habitDateAdded = "date_added";
+        public static final String habitDateLastDone = "date_last_done";
         public static Uri buildHabitsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

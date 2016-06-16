@@ -49,7 +49,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.e(LOG_TAG, "onCreateViewHolder -> " + true);
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_main, parent, false);
+                .inflate(R.layout.habits_list_item, parent, false);
         return new ViewHolder(view);
     }
 

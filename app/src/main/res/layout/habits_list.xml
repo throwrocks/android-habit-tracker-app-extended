@@ -30,7 +30,7 @@
             android:id="@+id/fragment"
             android:tag="countriesList"
             android:name="rocks.athrow.android_habit_tracker_app.HabitsListFragment"
-            tools:layout="@layout/content_main"
+            tools:layout="@layout/habits_list_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
