@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
+import java.security.Provider;
+
 public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback{
     private final String LOG_TAG = HabitsListActivity.class.getSimpleName();
 
@@ -84,12 +86,16 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
 
                         EditText viewNewHabitName = (EditText) view.findViewById(R.id.new_habit_name);
                         String habitName = viewNewHabitName.getText().toString();
+                        int habitCount = 0;
                         final ContentValues contentValues = new ContentValues();
                         contentValues.put("name",habitName);
+                        contentValues.put("count",habitCount);
 
-                        DBHelper sql = new DBHelper(getApplicationContext());
                         Log.e(LOG_TAG, "onClick: " + true);
-                        //sql.insertIntoDatabase(contentValues);
+                        getApplicationContext().getContentResolver().insert(
+                                HabitsContract.HabitsEntry.CONTENT_URI,
+                                contentValues
+                        );
                         Log.e(LOG_TAG, "Content: " + contentValues.get("name"));
                         Context context = getApplicationContext();
                         CharSequence text = "Habit Added!";

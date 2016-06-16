@@ -47,7 +47,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Log.e(LOG_TAG, "onCreateViewHolder -> " + true);
+        Log.e(LOG_TAG, "onCreateViewHolder -> " + true);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_main, parent, false);
         return new ViewHolder(view);
@@ -56,11 +56,11 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        // Log.e(LOG_TAG, "onBindviewHolder -> " + true);
+        Log.e(LOG_TAG, "onBindviewHolder -> " + true);
         mCursor.moveToPosition(position);
 
         //String habitId = mCursor.getString(1);
-        String habitName = mCursor.getString(2);
+        String habitName = mCursor.getString(1);
         String habitCount = mCursor.getString(2);
 
 
@@ -80,7 +80,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
     @Override
     public int getItemCount() {
-        //Log.e(LOG_TAG, "getItemCount -> " + mCursor.getCount());
+        Log.e(LOG_TAG, "getItemCount -> " + mCursor.getCount());
         if ( mCursor != null ) {
             return mCursor.getCount();
         }else{
