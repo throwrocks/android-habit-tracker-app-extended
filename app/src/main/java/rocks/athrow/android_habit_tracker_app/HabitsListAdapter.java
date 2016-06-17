@@ -1,5 +1,6 @@
 package rocks.athrow.android_habit_tracker_app;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,18 +31,21 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        //public final TextView viewhabitId;
+
         public final TextView viewHabitName;
-        public final TextView viewHabitCount;
         public final TextView viewHabitDateAdded;
+        public final TextView viewHabitCount;
+        public final TextView viewHabitFrequency;
+        public final Button viewHabitAddButton;
 
         public ViewHolder(View view) {
             super(view);
             mView = view.findViewById(R.id.habit_item);
             viewHabitName = (TextView) view.findViewById(R.id.habit_name);
-            viewHabitCount = (TextView) view.findViewById(R.id.habit_count);
             viewHabitDateAdded = (TextView) view.findViewById(R.id.habit_date_added);
-
+            viewHabitCount = (TextView) view.findViewById(R.id.habit_count);
+            viewHabitFrequency = (TextView) view.findViewById(R.id.habit_frequency);
+            viewHabitAddButton = (Button) view.findViewById(R.id.habit_add_button);
 
         }
 
@@ -60,24 +65,36 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
         Log.e(LOG_TAG, "onBindviewHolder -> " + true);
         mCursor.moveToPosition(position);
 
-        //String habitId = mCursor.getString(1);
-        String habitName = mCursor.getString(1);
-        String habitCount = mCursor.getString(2);
-        String habitDateAdded = mCursor.getString(3);
+        final String habitId = mCursor.getString(0);
+        final String habitName = mCursor.getString(1);
+        final String habitCountString = mCursor.getString(2);
+        final int habitCountInt = mCursor.getInt(2);
+        final String habitDateAdded = mCursor.getString(3);
 
 
         holder.viewHabitName.setText(habitName);
-        holder.viewHabitCount.setText(habitCount);
         holder.viewHabitDateAdded.setText(habitDateAdded);
+        holder.viewHabitCount.setText(habitCountString);
+        holder.viewHabitFrequency.setText("100%");
 
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.viewHabitAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence text = "Toast";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(mContext, text, duration);
-                toast.show();
+                //Log.e(LOG_TAG,"count " + habitId);
+                //Log.e(LOG_TAG,"count " + habitCountInt);
+                // Increase the habit count by 1
+                final int newCount = habitCountInt + 1;
+                // Create a new ContentValues Object to store the data that will be updated
+                final ContentValues contentValues = new ContentValues();
+                String[] selectionArgs = new String[]{habitId};
+                contentValues.put("count", newCount);
+                contentValues.put("date_last_done","");
+                mContext.getContentResolver().update(
+                        HabitsContract.HabitsEntry.CONTENT_URI,
+                        contentValues,
+                        "_ID=?",
+                        selectionArgs
+                );
             }
         });
     }

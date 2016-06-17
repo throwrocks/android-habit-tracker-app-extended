@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 class DBHelper extends SQLiteOpenHelper {
 
     // The database version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 6;
 
     private static final String DATABASE_NAME = "habits.db";
 
@@ -28,7 +28,7 @@ class DBHelper extends SQLiteOpenHelper {
                         HabitsContract.HabitsEntry.habitName + " TEXT NOT NULL, " +
                         HabitsContract.HabitsEntry.habitCount + " INTEGER NOT NULL, " +
                         HabitsContract.HabitsEntry.habitDateAdded + " TEXT NOT NULL, " +
-                        HabitsContract.HabitsEntry.habitDateLastDone + " TEXT NULL " +
+                        HabitsContract.HabitsEntry.habitDateLastDone + " TEXT NULL" +
 
                         ")";
         sqLiteDatabase.execSQL(SQL_CREATE_HABITS_TABLE);

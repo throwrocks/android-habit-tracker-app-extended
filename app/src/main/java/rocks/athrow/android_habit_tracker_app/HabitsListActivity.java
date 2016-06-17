@@ -77,6 +77,7 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
                         String habitDateAdded = dateFormat.format(cal.getTime());
                         //System.out.println(dateFormat.format(cal.getTime()));
 
+                        Log.e(LOG_TAG, "date added: " + habitDateAdded);
 
                         EditText viewNewHabitName = (EditText) view.findViewById(R.id.new_habit_name);
                         String habitName = viewNewHabitName.getText().toString();
@@ -85,6 +86,7 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
                         contentValues.put("name",habitName);
                         contentValues.put("count",habitCount);
                         contentValues.put("date_added",habitDateAdded);
+
 
                         Log.e(LOG_TAG, "onClick: " + true);
                         getApplicationContext().getContentResolver().insert(

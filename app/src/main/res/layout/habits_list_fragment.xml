@@ -11,41 +11,45 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
         android:orientation="horizontal"
-
-        android:weightSum="4">
+        android:weightSum="3">
 
         <TextView
+            android:id="@+id/habit_name_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="@dimen/item_list_text_left_margin"
             android:layout_weight="1"
             android:text="@string/habit_list_name_label"
             android:textColor="@color/colorSecondaryText" />
 
         <TextView
+            android:id="@+id/habit_date_added_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="@dimen/item_list_text_left_margin"
             android:layout_weight="1"
             android:text="@string/habit_list_date_added"
-            android:textAlignment="textStart"
             android:textColor="@color/colorSecondaryText" />
 
         <TextView
+            android:id="@+id/habit_count_label"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_list_text_left_margin"
-            android:layout_weight="1"
+            android:layout_weight=".50"
             android:text="@string/habit_list_count_label"
-            android:textAlignment="textStart"
             android:textColor="@color/colorSecondaryText" />
 
 
         <TextView
+            android:id="@+id/habit_add_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_list_text_left_margin"
-            android:layout_weight="1"
+            android:layout_weight=".50"
             android:textColor="@color/colorSecondaryText" />
 
     </LinearLayout>
