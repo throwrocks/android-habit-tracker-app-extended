@@ -12,7 +12,7 @@
         android:background="@color/colorPrimaryLight"
         android:orientation="horizontal"
 
-        android:weightSum="3">
+        android:weightSum="4">
 
         <TextView
             android:layout_width="0dp"
@@ -27,9 +27,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/item_list_text_left_margin"
             android:layout_weight="1"
+            android:text="@string/habit_list_date_added"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorSecondaryText" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/item_list_text_left_margin"
+            android:layout_weight="1"
             android:text="@string/habit_list_count_label"
             android:textAlignment="textStart"
             android:textColor="@color/colorSecondaryText" />
+
 
         <TextView
             android:layout_width="0dp"

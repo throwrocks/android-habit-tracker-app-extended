@@ -4,4 +4,5 @@
 
     <string name="habit_list_name_label">Name</string>
     <string name="habit_list_count_label">Count</string>
+    <string name="habit_list_date_added">Added on</string>
 </resources>

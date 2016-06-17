@@ -28,7 +28,7 @@ class DBHelper extends SQLiteOpenHelper {
                         HabitsContract.HabitsEntry.habitName + " TEXT NOT NULL, " +
                         HabitsContract.HabitsEntry.habitCount + " INTEGER NOT NULL, " +
                         HabitsContract.HabitsEntry.habitDateAdded + " TEXT NOT NULL, " +
-                        HabitsContract.HabitsEntry.habitDateLastDone + " TEXT NOT NULL " +
+                        HabitsContract.HabitsEntry.habitDateLastDone + " TEXT NULL " +
 
                         ")";
         sqLiteDatabase.execSQL(SQL_CREATE_HABITS_TABLE);

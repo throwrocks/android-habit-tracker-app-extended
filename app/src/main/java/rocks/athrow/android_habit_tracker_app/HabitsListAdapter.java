@@ -32,13 +32,14 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
         //public final TextView viewhabitId;
         public final TextView viewHabitName;
         public final TextView viewHabitCount;
-        //public final TextView viewHabitPercent;
+        public final TextView viewHabitDateAdded;
 
         public ViewHolder(View view) {
             super(view);
             mView = view.findViewById(R.id.habit_item);
             viewHabitName = (TextView) view.findViewById(R.id.habit_name);
             viewHabitCount = (TextView) view.findViewById(R.id.habit_count);
+            viewHabitDateAdded = (TextView) view.findViewById(R.id.habit_date_added);
 
 
         }
@@ -62,10 +63,13 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
         //String habitId = mCursor.getString(1);
         String habitName = mCursor.getString(1);
         String habitCount = mCursor.getString(2);
+        String habitDateAdded = mCursor.getString(3);
 
 
         holder.viewHabitName.setText(habitName);
         holder.viewHabitCount.setText(habitCount);
+        holder.viewHabitDateAdded.setText(habitDateAdded);
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +84,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
     @Override
     public int getItemCount() {
-        Log.e(LOG_TAG, "getItemCount -> " + mCursor.getCount());
+
         if ( mCursor != null ) {
             return mCursor.getCount();
         }else{

@@ -19,6 +19,12 @@ import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback{
     private final String LOG_TAG = HabitsListActivity.class.getSimpleName();
 
@@ -60,12 +66,25 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
 
                     public void onClick(DialogInterface arg0, int arg1) {
 
+
+                        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                        //get current date time with Date()
+                        Date date = new Date();
+                        System.out.println(dateFormat.format(date));
+
+                        //get current date time with Calendar()
+                        Calendar cal = Calendar.getInstance();
+                        String habitDateAdded = dateFormat.format(cal.getTime());
+                        //System.out.println(dateFormat.format(cal.getTime()));
+
+
                         EditText viewNewHabitName = (EditText) view.findViewById(R.id.new_habit_name);
                         String habitName = viewNewHabitName.getText().toString();
                         int habitCount = 0;
                         final ContentValues contentValues = new ContentValues();
                         contentValues.put("name",habitName);
                         contentValues.put("count",habitCount);
+                        contentValues.put("date_added",habitDateAdded);
 
                         Log.e(LOG_TAG, "onClick: " + true);
                         getApplicationContext().getContentResolver().insert(

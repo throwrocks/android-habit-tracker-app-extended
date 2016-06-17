@@ -20,6 +20,13 @@
             android:textColor="@color/primaryText"
             android:layout_marginStart="@dimen/item_list_text_left_margin"
             android:layout_weight="1" />
+        <TextView
+            android:id="@+id/habit_date_added"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryText"
+            android:layout_marginStart="@dimen/item_list_text_left_margin"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/habit_count"
