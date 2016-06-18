@@ -26,9 +26,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback{
+public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback {
     private final String LOG_TAG = HabitsListActivity.class.getSimpleName();
-
 
 
     @Override
@@ -42,7 +41,7 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if ( fab != null ) {
+        if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -51,7 +50,6 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
             });
         }
     }
-
 
 
     public void addHabit() {
@@ -71,8 +69,8 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
 
                         EditText viewNewHabitName = (EditText) view.findViewById(R.id.new_habit_name);
                         String habitName = viewNewHabitName.getText().toString();
-                        String[] projection = new String[]{ "_ID "};
-                        String[] selectionArgs = new String[]{ habitName };
+                        String[] projection = new String[]{"_ID "};
+                        String[] selectionArgs = new String[]{habitName};
                         Cursor queryResult;
 
                         queryResult = getApplicationContext().getContentResolver().query(
@@ -83,39 +81,48 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
                                 null
                         );
 
+                        int cursorCount;
 
-                        if ( queryResult != null ) {
+                        if (queryResult != null) {
+                            queryResult.moveToFirst();
+                            cursorCount = queryResult.getCount();
                             queryResult.close();
-                            Log.i(LOG_TAG, "habit exists");
-                            toastText = "Habit Already Exists";
+
+                            if (cursorCount > 0) {
+                                toastText = habitName + " already exists";
+                                Toast toast = Toast.makeText(context, toastText, toastDuration);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                            } else {
+
+                                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                                Date date = new Date();
+                                System.out.println(dateFormat.format(date));
+                                Calendar cal = Calendar.getInstance();
+                                String habitDateAdded = dateFormat.format(cal.getTime());
+
+                                int habitCount = 0;
+                                final ContentValues contentValues = new ContentValues();
+                                contentValues.put("name", habitName);
+                                contentValues.put("count", habitCount);
+                                contentValues.put("date_added", habitDateAdded);
+
+                                getApplicationContext().getContentResolver().insert(
+                                        HabitsContract.HabitsEntry.CONTENT_URI,
+                                        contentValues
+                                );
+
+                                toastText = "Habit Added!";
+                                Toast toast = Toast.makeText(context, toastText, toastDuration);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                            }
+                        }
+                        else{
+                            toastText = "Oops, something wrong. Please try again.";
                             Toast toast = Toast.makeText(context, toastText, toastDuration);
                             toast.setGravity(Gravity.CENTER, 0, 0);
                             toast.show();
-
-                        }else {
-
-                            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-                            Date date = new Date();
-                            System.out.println(dateFormat.format(date));
-                            Calendar cal = Calendar.getInstance();
-                            String habitDateAdded = dateFormat.format(cal.getTime());
-
-                            int habitCount = 0;
-                            final ContentValues contentValues = new ContentValues();
-                            contentValues.put("name", habitName);
-                            contentValues.put("count", habitCount);
-                            contentValues.put("date_added", habitDateAdded);
-
-                            getApplicationContext().getContentResolver().insert(
-                                    HabitsContract.HabitsEntry.CONTENT_URI,
-                                    contentValues
-                            );
-
-                            toastText = "Habit Added!";
-                            Toast toast = Toast.makeText(context, toastText, toastDuration);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                            //close();
                         }
                     }
                 })

@@ -5,12 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by josel on 6/9/2016.
@@ -23,8 +30,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
     private Cursor mCursor;
 
 
-
-    public HabitsListAdapter(Context context, Cursor habitsCursor){
+    public HabitsListAdapter(Context context, Cursor habitsCursor) {
         mContext = context;
         mCursor = habitsCursor;
     }
@@ -80,21 +86,79 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
         holder.viewHabitAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.e(LOG_TAG,"count " + habitId);
-                //Log.e(LOG_TAG,"count " + habitCountInt);
-                // Increase the habit count by 1
-                final int newCount = habitCountInt + 1;
-                // Create a new ContentValues Object to store the data that will be updated
-                final ContentValues contentValues = new ContentValues();
+                // Toast variables
+                int toastDuration = Toast.LENGTH_SHORT;
+                String toastText;
+
+                // Get today's date
+                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                Date date = new Date();
+                Calendar cal = Calendar.getInstance();
+                String dateToday = dateFormat.format(cal.getTime());
+
+                // Check if this habit was already completed today
+                String[] projection = new String[]{"date_last_done"};
                 String[] selectionArgs = new String[]{habitId};
-                contentValues.put("count", newCount);
-                contentValues.put("date_last_done","");
-                mContext.getContentResolver().update(
+                Cursor queryResult;
+                queryResult = mContext.getContentResolver().query(
                         HabitsContract.HabitsEntry.CONTENT_URI,
-                        contentValues,
+                        projection,
                         "_ID=?",
-                        selectionArgs
+                        selectionArgs,
+                        null
                 );
+                String dateLastDone;
+                if (queryResult != null) {
+                    queryResult.moveToFirst();
+                    dateLastDone = queryResult.getString(0);
+                    queryResult.close();
+                    // If the habit was completed today, don't add a count
+                    if ( dateLastDone == null || !dateLastDone.equals(dateToday) )  {
+                        // Increase the habit count by 1
+                        final int newCount = habitCountInt + 1;
+                        // Create a new ContentValues Object to store the data that will be updated
+                        final ContentValues contentValues = new ContentValues();
+                        selectionArgs = new String[]{habitId};
+                        contentValues.put("count", newCount);
+                        contentValues.put("date_last_done", dateToday);
+                        mContext.getContentResolver().update(
+                                HabitsContract.HabitsEntry.CONTENT_URI,
+                                contentValues,
+                                "_ID=?",
+                                selectionArgs
+                        );
+                        toastText = "Good job!";
+                        Toast toast = Toast.makeText(mContext, toastText, toastDuration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
+                        queryResult.close();
+                        toastText = "You already completed this Habit today.";
+                        Toast toast = Toast.makeText(mContext, toastText, toastDuration);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+
+                    }
+                } else{
+                    toastText = "Oops, something wrong. Please try again.";
+                    Toast toast = Toast.makeText(mContext, toastText, toastDuration);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // Toast variables
+                int toastDuration = Toast.LENGTH_SHORT;
+                String toastText;
+                toastText = "Long Click";
+                Toast toast = Toast.makeText(mContext, toastText, toastDuration);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                return false;
             }
         });
 
@@ -104,12 +168,13 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
     @Override
     public int getItemCount() {
 
-        if ( mCursor != null ) {
+        if (mCursor != null) {
             return mCursor.getCount();
-        }else{
+        } else {
             return 0;
         }
     }
+
     /**
      * changeCursor
      * Called from the fragment to change the cursor once the data is loaded
