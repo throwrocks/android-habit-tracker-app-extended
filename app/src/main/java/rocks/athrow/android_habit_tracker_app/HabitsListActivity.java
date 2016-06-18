@@ -3,6 +3,7 @@ package rocks.athrow.android_habit_tracker_app;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -58,49 +59,64 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
         LayoutInflater inflater = this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.habit_entry_dialog, null);
 
-
-        AlertDialog alertbox = new AlertDialog.Builder(this)
+        AlertDialog newHabitDialog = new AlertDialog.Builder(this)
                 .setView(view)
                 .setMessage("New Habit")
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-
-
-                        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-                        //get current date time with Date()
-                        Date date = new Date();
-                        System.out.println(dateFormat.format(date));
-
-                        //get current date time with Calendar()
-                        Calendar cal = Calendar.getInstance();
-                        String habitDateAdded = dateFormat.format(cal.getTime());
-                        //System.out.println(dateFormat.format(cal.getTime()));
-
-                        Log.e(LOG_TAG, "date added: " + habitDateAdded);
+                        Context context = getApplicationContext();
+                        int toastDuration = Toast.LENGTH_SHORT;
+                        String toastText;
 
                         EditText viewNewHabitName = (EditText) view.findViewById(R.id.new_habit_name);
                         String habitName = viewNewHabitName.getText().toString();
-                        int habitCount = 0;
-                        final ContentValues contentValues = new ContentValues();
-                        contentValues.put("name",habitName);
-                        contentValues.put("count",habitCount);
-                        contentValues.put("date_added",habitDateAdded);
+                        String[] projection = new String[]{ "_ID "};
+                        String[] selectionArgs = new String[]{ habitName };
+                        Cursor queryResult;
 
-
-                        Log.e(LOG_TAG, "onClick: " + true);
-                        getApplicationContext().getContentResolver().insert(
+                        queryResult = getApplicationContext().getContentResolver().query(
                                 HabitsContract.HabitsEntry.CONTENT_URI,
-                                contentValues
+                                projection,
+                                "name=?",
+                                selectionArgs,
+                                null
                         );
-                        Log.e(LOG_TAG, "Content: " + contentValues.get("name"));
-                        Context context = getApplicationContext();
-                        CharSequence text = "Habit Added!";
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                        //close();
+
+
+                        if ( queryResult != null ) {
+                            queryResult.close();
+                            Log.i(LOG_TAG, "habit exists");
+                            toastText = "Habit Already Exists";
+                            Toast toast = Toast.makeText(context, toastText, toastDuration);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+
+                        }else {
+
+                            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                            Date date = new Date();
+                            System.out.println(dateFormat.format(date));
+                            Calendar cal = Calendar.getInstance();
+                            String habitDateAdded = dateFormat.format(cal.getTime());
+
+                            int habitCount = 0;
+                            final ContentValues contentValues = new ContentValues();
+                            contentValues.put("name", habitName);
+                            contentValues.put("count", habitCount);
+                            contentValues.put("date_added", habitDateAdded);
+
+                            getApplicationContext().getContentResolver().insert(
+                                    HabitsContract.HabitsEntry.CONTENT_URI,
+                                    contentValues
+                            );
+
+                            toastText = "Habit Added!";
+                            Toast toast = Toast.makeText(context, toastText, toastDuration);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            //close();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -110,7 +126,7 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
                 .show();
         // Automatically pop up the keyboard
         // See http://stackoverflow.com/questions/2403632/android-show-soft-keyboard-automatically-when-focus-is-on-an-edittext
-        alertbox.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        newHabitDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     @Override

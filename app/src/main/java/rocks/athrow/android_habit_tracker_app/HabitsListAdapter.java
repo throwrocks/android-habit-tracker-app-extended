@@ -97,7 +97,9 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                 );
             }
         });
+
     }
+
 
     @Override
     public int getItemCount() {
