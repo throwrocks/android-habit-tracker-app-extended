@@ -22,8 +22,8 @@ public class HabitsListFragment extends Fragment implements LoaderManager.Loader
     public HabitsListFragment() {
     }
 
-    public static final String LOG_TAG = HabitsListFragment.class.getSimpleName();
-    Cursor mCursor;
+    private static final String LOG_TAG = HabitsListFragment.class.getSimpleName();
+    private Cursor mCursor;
     private HabitsListAdapter habitsAdapter;
 
 

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ import java.util.Locale;
 
 public class HabitsListActivity extends AppCompatActivity implements HabitsListFragment.Callback {
     private final String LOG_TAG = HabitsListActivity.class.getSimpleName();
-
+    private CoordinatorLayout parentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
         Stetho.initializeWithDefaults(this);
 
         setContentView(R.layout.habits_list);
+        parentView = (CoordinatorLayout) findViewById(R.id.habit_list_parent);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -52,10 +54,10 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
     }
 
 
-    public void addHabit() {
+    private void addHabit() {
 
         LayoutInflater inflater = this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.habit_entry_dialog, null);
+        final View view = inflater.inflate(R.layout.habit_entry_dialog, parentView, false);
 
         AlertDialog newHabitDialog = new AlertDialog.Builder(this)
                 .setView(view)

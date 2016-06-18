@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 /**
  * Created by josel on 6/10/2016.
  */
-public class HabitsContract {
+class HabitsContract {
 
     // The content authority
     public static final String CONTENT_AUTHORITY = "rocks.athrow20.android_habit_tracker_app";
@@ -43,7 +43,6 @@ public class HabitsContract {
         public static final String HABITS_TABLE_NAME = "habits";
 
         //The habits table fields
-        public static final String habitId = "id";
         public static final String habitName = "name";
         public static final String habitCount = "count";
         public static final String habitDateAdded = "date_added";

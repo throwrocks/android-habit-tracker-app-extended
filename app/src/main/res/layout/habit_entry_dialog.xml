@@ -8,8 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:labelFor="@+id/item_sale_qty"
-        android:text="Habit: " />
+        android:labelFor="@+id/new_habit_name"
+        android:text="@string/habit_dialog_name_label" />
 
     <EditText
         android:id="@+id/new_habit_name"

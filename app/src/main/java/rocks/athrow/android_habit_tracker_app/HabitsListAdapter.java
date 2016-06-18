@@ -81,7 +81,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
         holder.viewHabitName.setText(habitName);
         holder.viewHabitDateAdded.setText(habitDateAdded);
         holder.viewHabitCount.setText(habitCountString);
-        holder.viewHabitFrequency.setText("100%");
+        holder.viewHabitFrequency.setText("");
 
         holder.viewHabitAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,6 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
                 // Get today's date
                 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-                Date date = new Date();
                 Calendar cal = Calendar.getInstance();
                 String dateToday = dateFormat.format(cal.getTime());
 
