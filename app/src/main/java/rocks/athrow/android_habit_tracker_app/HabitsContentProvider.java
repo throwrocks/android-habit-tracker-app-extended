@@ -21,7 +21,7 @@ import android.net.Uri;
  * Created by josel on 3/10/2016.
  */
 public class HabitsContentProvider extends ContentProvider {
-    private static final String LOG_TAG = "CountriesProvider";
+    private static final String LOG_TAG = "HabitsContentProvider";
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private SQLiteOpenHelper mOpenHelper;

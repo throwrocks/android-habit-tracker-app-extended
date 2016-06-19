@@ -107,7 +107,7 @@ public class HabitsListActivity extends AppCompatActivity implements HabitsListF
                                 final ContentValues contentValues = new ContentValues();
                                 contentValues.put("name", habitName);
                                 contentValues.put("count", habitCount);
-                                contentValues.put("date_added", habitDateAdded);
+                                contentValues.put("date_added", "6/15/2016");
 
                                 getApplicationContext().getContentResolver().insert(
                                         HabitsContract.HabitsEntry.CONTENT_URI,

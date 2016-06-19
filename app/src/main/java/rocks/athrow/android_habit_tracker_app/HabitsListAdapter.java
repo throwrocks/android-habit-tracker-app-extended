@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +30,6 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
     private final Context mContext;
     private Cursor mCursor;
 
-
     public HabitsListAdapter(Context context, Cursor habitsCursor) {
         mContext = context;
         mCursor = habitsCursor;
@@ -37,7 +37,6 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-
         public final TextView viewHabitName;
         public final TextView viewHabitDateAdded;
         public final TextView viewHabitCount;
@@ -52,14 +51,11 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
             viewHabitCount = (TextView) view.findViewById(R.id.habit_count);
             viewHabitFrequency = (TextView) view.findViewById(R.id.habit_frequency);
             viewHabitAddButton = (Button) view.findViewById(R.id.habit_add_button);
-
         }
-
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e(LOG_TAG, "onCreateViewHolder -> " + true);
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.habits_list_item, parent, false);
         return new ViewHolder(view);
@@ -67,22 +63,44 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
-        Log.e(LOG_TAG, "onBindviewHolder -> " + true);
+        // Create a DateFormat object to format dates used in calculations
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         mCursor.moveToPosition(position);
-
+        // Get the habit data
         final String habitId = mCursor.getString(0);
         final String habitName = mCursor.getString(1);
         final String habitCountString = mCursor.getString(2);
         final int habitCountInt = mCursor.getInt(2);
         final String habitDateAdded = mCursor.getString(3);
-
-
+        // Get today's date to calculate frequency %
+        Calendar cal = Calendar.getInstance();
+        String dateToday = dateFormat.format(cal.getTime());
+        final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+        // Initialize variables to calculate and display frequency &
+        int daysSinceToday;
+        double frequency;
+        String frequencyString = "0%";
+        // If this habit has been completed, let's calculate the frequency %
+        if (habitCountInt > 0) {
+            try {
+                Date dateHabitDateAdded = dateFormat.parse(habitDateAdded);
+                Date dateDateToday = dateFormat.parse(dateToday);
+                daysSinceToday = (int) ((dateDateToday.getTime() - dateHabitDateAdded.getTime()) / DAY_IN_MILLIS) + 1;
+                // Calculate the frequency
+                frequency = (double) habitCountInt / (double) daysSinceToday;
+                // Format the frequency into #% String
+                DecimalFormat df = new DecimalFormat("#%");
+                frequencyString = df.format(frequency);
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        // Update the views
         holder.viewHabitName.setText(habitName);
         holder.viewHabitDateAdded.setText(habitDateAdded);
         holder.viewHabitCount.setText(habitCountString);
-        holder.viewHabitFrequency.setText("");
-
+        holder.viewHabitFrequency.setText(frequencyString);
+        // Set the onClickListener on the Add button (to handle increasing the count)
         holder.viewHabitAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,8 +129,8 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                     queryResult.moveToFirst();
                     dateLastDone = queryResult.getString(0);
                     queryResult.close();
-                    // If the habit was completed today, don't add a count
-                    if ( dateLastDone == null || !dateLastDone.equals(dateToday) )  {
+                    // Only increase the count if the habit hasn't been completed today
+                    if (dateLastDone == null || !dateLastDone.equals(dateToday)) {
                         // Increase the habit count by 1
                         final int newCount = habitCountInt + 1;
                         // Create a new ContentValues Object to store the data that will be updated
@@ -130,6 +148,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                         Toast toast = Toast.makeText(mContext, toastText, toastDuration);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                        // If the habit was completed today, don't add a count
                     } else {
                         queryResult.close();
                         toastText = "You already completed this Habit today.";
@@ -138,7 +157,8 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                         toast.show();
 
                     }
-                } else{
+                    // If there was a problem retrieving the cursor provide some feedback
+                } else {
                     toastText = "Oops, something wrong. Please try again.";
                     Toast toast = Toast.makeText(mContext, toastText, toastDuration);
                     toast.setGravity(Gravity.CENTER, 0, 0);
@@ -146,7 +166,7 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                 }
             }
         });
-
+        //
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -160,7 +180,6 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
                 return false;
             }
         });
-
     }
 
 
@@ -179,7 +198,6 @@ public class HabitsListAdapter extends RecyclerView.Adapter<HabitsListAdapter.Vi
      * Called from the fragment to change the cursor once the data is loaded
      */
     public void changeCursor(Cursor cursor) {
-        Log.e(LOG_TAG, "changeCursor -> " + cursor.getCount());
         mCursor = cursor;
     }
 }
